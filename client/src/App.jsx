@@ -8,6 +8,7 @@ import JournalTile from './Components/JournalTile';
 import Journal from './Components/Journal';
 import { StateContext } from './context/StateContext';
 import AuthorGuidelines from './pages/AuthorGuidelines';
+import CopyrightForm from './pages/CopyrightForm';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path={"/articles"} element={<JournalTile/>} />
           <Route path={'/article'} element={<Journal/>} />
           <Route path={'/authorGuidelines'} element={<AuthorGuidelines/>} />
+          <Route path={'/copyright-assignment-form'} element={<CopyrightForm/>} />
         </Route>        
       </Routes>
     </StateContext>

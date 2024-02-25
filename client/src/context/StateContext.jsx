@@ -75,6 +75,55 @@ export const StateContext = ({ children }) => {
     setMessage(event.target.value);
   };
 
+  // likes and views
+
+  const incrementLikes = (id) => {
+    try {
+      fetch("http://localhost:5000/incrementLikes", {
+        method: "PUT",
+        body: JSON.stringify({
+          id: id,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+    } catch (error) {
+      console.log("Error in liking", error);
+    }
+  };
+
+  const decrementLikes = (id) => {
+    try {
+      fetch("http://localhost:5000/decrementLikes", {
+        method: "PUT",
+        body: JSON.stringify({
+          id: id,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+    } catch (error) {
+      console.log("Error in Dliking", error);
+    }
+  };
+  const incrementViews = (id) => {
+    try {
+      fetch("http://localhost:5000/incrementViews", {
+        method: "PUT",
+        body: JSON.stringify({
+          id: id,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+    } catch (error) {
+      console.log("Error in viewsupgrade", error);
+    }
+  };
+
   return (
     <Context.Provider
       value={{
@@ -101,6 +150,9 @@ export const StateContext = ({ children }) => {
         handleEmailChange,
         handlePhoneChange,
         handleMessageChange,
+        incrementLikes,
+        decrementLikes,
+        incrementViews,
       }}
     >
       {children}

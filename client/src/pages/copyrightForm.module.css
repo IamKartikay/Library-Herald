@@ -1,0 +1,52 @@
+.page_content{
+    width: 55%;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    h1{
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    section{
+        margin-bottom: 40px;
+    }
+
+
+}
+
+.identation{
+    max-width: 65%;
+    margin: auto;
+   
+
+    .rectangle{
+        width: 100%;
+        height: 30px;
+        background-color: #dae8eb;
+        border: 2px solid #909090;
+    }
+
+    h1{
+        text-align: center;
+    }
+
+    p{
+        margin-bottom: 25px;
+        overflow-wrap: break-word;
+    }
+
+    .justified{
+        text-align: justify;
+    }
+
+    
+
+
+}
+
+#last_para{
+    margin-top: 100px;
+}

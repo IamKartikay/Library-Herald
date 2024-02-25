@@ -14,7 +14,9 @@ const ArticleSchema = new Schema({
     authorDetails: {type: String},
     abstract: {type: String},
     keywords: {type: String},
-    journal: {type: mongoose.Schema.Types.ObjectId, ref: 'Journal'}
+    journal: {type: mongoose.Schema.Types.ObjectId, ref: 'Journal'},
+    likes: {type: Number},
+    views: {type: Number}
   });
   
   const Article = mongoose.model("Article", ArticleSchema);

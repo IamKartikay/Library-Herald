@@ -5,8 +5,9 @@ const bodyParser = require("body-parser");
 const Journal = require("./models/Journal");
 const Article = require("./models/Article");
 const { ObjectId } = require("mongodb");
-const fs = require("fs").promises;
 const { Resend } = require("resend");
+const fs = require("fs");
+const path = require("path");
 
 const resend = new Resend("re_5HPBtJU2_NBDcLJgKMfNgYjBcnT8dsAVg");
 const app = express();
@@ -31,6 +32,7 @@ async function main() {
 }
 main();
 
+//const fs = require("fs").promises;
 // async function readJsonFile() {
 //   try {
 //     // Read the JSON file asynchronously
@@ -108,7 +110,25 @@ main();
 // }
 
 app.get("/", async (req, res) => {
-  res.send("<h1>hey!!!</h1>");
+
+  const currentJournal = await Journal.aggregate([
+    {
+      $group: {
+        _id: "$year", // Group by year
+        issue: { $max: "$issue" }, // Find the maximum issue for each year
+        volume: { $max: "$volume" }, // Find the maximum issue for each year
+        id:{$first: "$_id" },
+      }
+    },
+    {
+      $sort: { _id: -1 } // Sort by year in descending order
+    },
+    {
+      $limit: 1 // Limit to the first result which will be the maximum year
+    },
+  ]);
+  console.log(currentJournal[0]);
+  res.send(currentJournal[0]);
 });
 
 app.get("/allJournals", async (req, res) => {
@@ -195,6 +215,57 @@ app.post("/contact-us", (req, res) => {
     console.log(error);
     res.end();
   }
+});
+
+app.put("/incrementLikes", async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  try {
+    const result = await Article.updateOne({ _id: id }, { $inc: { likes: 1 } });
+    console.log(result);
+    const newLikes = await Article.findOne(
+      { _id: new ObjectId(id) },
+      { likes: 1, _id: 0 }
+    );
+    res.status(200).end();
+  } catch (error) {
+    console.log("in liking", error);
+  }
+});
+
+app.put("/decrementLikes", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await Article.updateOne(
+      { _id: new ObjectId(id) },
+      { $inc: { likes: -1 } }
+    );
+    res.status(200).end();
+  } catch (error) {
+    console.log("in disliking", error);
+  }
+});
+
+app.put("/incrementViews", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await Article.updateOne({ _id: id }, { $inc: { views: 1 } });
+    res.status(200).end();
+  } catch (error) {
+    console.log("in viewinc", error);
+  }
+});
+
+app.get("/download_copyright_form", async (req, res) => {
+  var filePath = path.join(__dirname, "/Copyright_Assignment_Form.pdf");
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    res.contentType("application/pdf");
+    res.send(data);
+  });
 });
 
 app.listen(port, () => {

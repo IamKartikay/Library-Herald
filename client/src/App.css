@@ -35,7 +35,7 @@ body{
   padding-left: 16px;
 }
 
-
+/* journal page */
 .j_container {
   max-height: auto;
   display: flex;
@@ -92,7 +92,15 @@ body{
 
 /* home page */
 
+/* @media (max-width: 475px) {
+
+  .hsection .title-txt{
+    font-size: 1px;
+  }
+} */
+
 .hsection {
+
   width: 100%;
   height: auto;
   display: flex;
@@ -292,17 +300,21 @@ input {
 /* width: '610.5px' , height: '919px' */
 
 .custom-button {
-  display: inline-block;
-  min-width: 140px;
+  min-width: 120px;
   height: 40px; /* Set your desired fixed height */
-  padding: 0 16px; /* Add padding for better visual appearance */
   font-size: 14px; /* Adjust font size as needed */
   cursor: pointer;
   border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+  align-content: center;
+  p{
+    margin: auto;
+    font-weight: 500;
+  }
 }
 
 .custom-button:hover {
-  background-color: #2243ba; /* Change background color on hover */
+  fill: #2243ba; /* Change background color on hover */
+  border: 2px solid rgb(56, 16, 166)
 }
 
 

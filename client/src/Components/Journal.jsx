@@ -4,12 +4,20 @@ import Context from "../context/StateContext";
 import logo from "../assets/logo2.jpg";
 import { FaLinkedinIn, FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { AiOutlineLink } from "react-icons/ai";
+import { AiOutlineLink, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import ShareToggle from "./ShareToggle";
 
 const Journal = () => {
-  const { fbshare, twittershare, lkdshare,copyLink } = useContext(Context);
+  const {
+    fbshare,
+    twittershare,
+    lkdshare,
+    copyLink,
+    incrementLikes,
+    decrementLikes,
+    incrementViews,
+  } = useContext(Context);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const article_id = queryParams.get("id");
@@ -17,6 +25,8 @@ const Journal = () => {
   const volume = queryParams.get("volume");
   const issue = queryParams.get("issue");
   const [data, setData] = useState(null);
+  const [liked, setLiked] = useState(false); //to toggle like button
+  const [currLikes, setcurrLikes] = useState(null); //to prevent refreshes to show updated likes
 
   const fetchData = async () => {
     try {
@@ -24,6 +34,7 @@ const Journal = () => {
         `http://localhost:5000/article/?_id=${article_id}`
       );
       const jsonData = await response.json();
+      setcurrLikes(jsonData.likes)
       setData(jsonData);
     } catch (error) {
       console.log(error);
@@ -32,6 +43,7 @@ const Journal = () => {
 
   useEffect(() => {
     fetchData();
+    
   }, []);
 
   const {
@@ -45,6 +57,8 @@ const Journal = () => {
     printISSN,
     onlineISSN,
     doi,
+    views,
+    _id
   } = data ?? {};
 
 
@@ -54,6 +68,17 @@ const Journal = () => {
     return modifiedText;
   }
 
+  const handleLikeButton = () => {
+    if (liked) {
+      setcurrLikes((currLikes) => currLikes - 1);
+      decrementLikes(_id);
+    } else {
+      setcurrLikes((currLikes) => currLikes + 1);
+      incrementLikes(_id);
+    }
+    setLiked(!liked);
+  };
+
   return (
     <>
       {data ? (
@@ -62,7 +87,7 @@ const Journal = () => {
             <div className="sec1" style={{ marginBottom: "25px" }}>
               <img src={logo} />
               <p>Library Herald</p>
-              <ShareToggle/>
+              <ShareToggle />
             </div>
             <div className="section">
               <h1>{title}</h1>
@@ -121,6 +146,21 @@ const Journal = () => {
               </Link>
             </div>
             <div id="hori-line" />
+            <div className="sec3">
+              <div>
+                <p>{views} views</p>
+              </div>
+              <div>
+                <p>{currLikes}</p>
+                <button onClick={()=>handleLikeButton(_id)}>
+                  {liked ? (
+                    <AiFillHeart color="#d52c49" />
+                  ) : (
+                    <AiOutlineHeart color="#d52c49" />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       ) : (

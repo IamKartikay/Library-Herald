@@ -47,7 +47,7 @@ export default function Example() {
             <a  id='about' onClick={(event) => handleNavbarAnchoring(event.target, event.target.id)}>About the Journal</a>
             <a id="editorial" onClick={(event) => handleNavbarAnchoring(event.target, event.target.id)}>Editorial Board</a>
             <Link to={'/authorGuidelines'}>Author Guidelines</Link>
-            <Link>Copyright Assignment Form</Link>
+            <Link to={'/copyright-assignment-form'}>Copyright Assignment Form</Link>
           </div>
         )}
         <Link to={"/archieve"}>Archive</Link>

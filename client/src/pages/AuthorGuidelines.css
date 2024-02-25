@@ -1,0 +1,32 @@
+.page-content{
+    height: auto;
+    width: 50%;
+    margin: auto;
+    margin-top: 55px;
+    margin-bottom: 55px;
+    opacity: 0.85;
+
+    h1{
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    section{
+        margin-bottom: 30px;
+
+        p{
+            margin-left: 35px;
+            line-height: 1.25em;
+            margin-bottom: 15px;
+        }
+
+        strong{
+            margin-left: 35px;
+        }
+    }
+
+    .identation{
+        margin-left: 35px;
+    }
+}

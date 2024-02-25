@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import book from "../assets/Lib.jpg";
 import Button from "../Components/Button";
 import HomeTabs from "../Components/HomeTabs";
@@ -12,8 +12,31 @@ import {
 } from "../data/homePage";
 import EditorLists from "../Components/editorLists";
 import ContactUsForm from '../Components/ContactUsForm';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [latestJournalDetails ,setLatestJournalDetails] = useState("");
+
+  const fetchLatestJournalDetails = async() =>{
+    fetch('http://localhost:5000/', {
+      method:'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => res.json())
+    .then(details => setLatestJournalDetails(details))
+    .catch(err => console.log(err))
+  }
+
+  const handleLatestJournalDetails = () => {
+    navigate(`/articles/?year=${latestJournalDetails._id}&issue=${latestJournalDetails.issue}&volume=${latestJournalDetails.volume}`)
+  }
+
+  useEffect(()=>{
+    fetchLatestJournalDetails();
+  },[])
 
   return (
     <>
@@ -32,7 +55,7 @@ const Home = () => {
               every year.
             </p>
             <p id="ph">Current Issue</p>
-            <Button buttonText={"Vol1 2023"} />
+            <button class="bg-blue w-40 h-11 rounded-lg hover:bg-red" style={{color:'white'}}  onClick={()=>handleLatestJournalDetails()}>{latestJournalDetails ? `Vol ${latestJournalDetails.volume} No. ${latestJournalDetails.issue} ${latestJournalDetails._id}` : '....'}</button>
           </div>
         </div>
       </div>
@@ -272,7 +295,7 @@ const Home = () => {
           >
             <b>On an annual subscription of Rs.2,000</b>
           </p>
-          <Button buttonText="Subscribe" />
+          <Button buttonText="Subscribe" bgcolor={'#fff2d4'} textColor={'black'}/>
         </div>
       </div>
 

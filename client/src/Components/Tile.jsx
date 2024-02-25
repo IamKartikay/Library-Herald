@@ -11,26 +11,58 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FaLinkedinIn, FaFacebookF, FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { AiOutlineLink } from "react-icons/ai";
+import { AiOutlineLink, AiOutlineHeart, AiFillHeart} from "react-icons/ai";
+import { IoEyeOutline } from "react-icons/io5";
 import Context from "../context/StateContext";
+import { useEffect } from "react";
 
 const Tile = (props) => {
-  const { fbshare, twittershare, lkdshare,copyLink } = useContext(Context);
+  const {
+    fbshare,
+    twittershare,
+    lkdshare,
+    copyLink,
+    incrementLikes,
+    decrementLikes,
+    incrementViews,
+  } = useContext(Context);
 
   //Component-Level State:
   const [option, SetOption] = useState(false);
   const [sharepopup, setSharepopup] = useState(false);
-  const handleSharepopup = () => {
-    setSharepopup(true);
-    SetOption(false);
-  };
+  const [liked, setLiked] = useState(false); //to toggle like button
+  const [currLikes, setcurrLikes] = useState(null);//to prevent refreshes to show updated likes
 
   const Navigate = useNavigate();
-  console.log(props.data);
-  const { _id, firstPage, lastPage, printISSN, title, onlineISSN, doi } =
-    props.data;
+
+  const {
+    _id,
+    firstPage,
+    lastPage,
+    printISSN,
+    title,
+    onlineISSN,
+    doi,
+    views,
+    likes,
+  } = props.data;
+
+  useEffect(()=>{
+    setcurrLikes(likes);
+  },[])
 
   const { year, volume, issue } = props;
+
+  const handleLikeButton = () => {
+    if (liked) {
+      setcurrLikes(currLikes => currLikes-1)
+      decrementLikes(_id);
+    } else {
+      setcurrLikes(currLikes => currLikes+1)
+      incrementLikes(_id);
+    }
+    setLiked(!liked);
+  };
 
   return (
     <>
@@ -146,11 +178,12 @@ const Tile = (props) => {
 
         <div
           className="sec2"
-          onClick={() =>
+          onClick={() =>{
+            incrementViews(_id);
             Navigate(
               `/article/?year=${year}&issue=${issue}&volume=${volume}&id=${_id}`
             )
-          }
+          }}
         >
           <p style={{ fontSize: "13px" }}>
             issue{props.issue} {props.year}
@@ -165,6 +198,24 @@ const Tile = (props) => {
           </p>
         </div>
         <div id="hori-line" />
+        <div className="sec3">
+          <div>
+              <IoEyeOutline />{" "}
+            <p>{views}</p>
+          </div>
+          <div>
+            <p>{currLikes}</p>
+            <button onClick={handleLikeButton}>
+              {
+                liked ? (
+                  <AiFillHeart color="#d52c49"/>
+                ):(
+                  <AiOutlineHeart color="#d52c49"/>
+                )
+              }
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -92,12 +92,14 @@ const ContactUsForm = () => {
           value={message}
           onChange={handleMessageChange}
         />
-        <Button
-          textColor={"white"}
-          buttonText={"Submit"}
-          bgcolor={"#3a54b4"}
-          type="submit"
-        />
+        <div style={{display:'flex', justifyContent:'center'}}>
+          <Button
+            textColor={"white"}
+            buttonText={"Submit"}
+            bgcolor={"#3a54b4"}
+            type="submit"
+          />
+        </div>
       </form>
     </div>
   );
